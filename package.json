@@ -1,0 +1,24 @@
+{
+  "name": "voice-microdrama-engine",
+  "version": "0.1.0",
+  "description": "Voice-first interactive micro-drama engine — public-safe hackathon edition",
+  "license": "MIT",
+  "scripts": {
+    "dev": "echo 'Demo mode: open src/ in your editor or integrate with your framework. Mock providers need no server.' && node -e \"console.log('Voice Microdrama Engine — mock mode ready')\"",
+    "start": "node -e \"console.log('Voice Microdrama Engine — running in mock mode on port ' + (process.env.PORT || 3000))\"",
+    "test": "echo 'Tests coming soon — see src/ for module structure'",
+    "build": "echo 'Build step: integrate with Next.js / Express / your framework of choice'"
+  },
+  "keywords": [
+    "voice-first",
+    "interactive-fiction",
+    "micro-drama",
+    "amd",
+    "hackathon",
+    "llm",
+    "storytelling"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
