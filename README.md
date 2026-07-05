@@ -15,7 +15,7 @@ This is a **public-safe hackathon edition** of Life Blind Box.
 
 The private production repository, full prompts, complete scene library, internal QA logs, and secrets are **not** included.
 
-This repo is purpose-built for the AMD Showcase demo. It contains:
+This repo is purpose-built for hackathon and showcase submissions. It contains:
 - A simplified voice-first game loop (voice input → story → narration → ending)
 - Modular provider abstraction (LLM / ASR / TTS can be swapped)
 - 2–3 demo scene templates (not the full production library)
