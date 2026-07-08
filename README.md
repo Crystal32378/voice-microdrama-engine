@@ -56,6 +56,21 @@ Voice-first AI experiences are engaging, but each session involves speech recogn
 
 Life Blind Box Runtime explores how to make voice-first AI microdramas **always playable** — stable, replayable, and economically viable — rather than dying from cost, latency, or provider instability.
 
+## Screenshots
+
+| | | |
+|---|---|---|
+| ![Landing](./screenshots/01-landing.png) | ![Active voice](./screenshots/02-active-voice.png) | ![Ending card](./screenshots/03-ending-card.png) |
+| Landing screen | Active voice interaction | Ending card |
+
+> Screenshots captured from live demo. See [`screenshots/README.md`](./screenshots/README.md) for capture guide.
+
+## Demo video script
+
+A 60–90 second demo video script is available in [`docs/demo-script.md`](./docs/demo-script.md).
+
+---
+
 ## Current demo
 
 **Try it now**: https://frontend-production-9b60.up.railway.app/
