@@ -8,6 +8,36 @@ A voice-first AI microdrama engine for short, replayable interactive story sessi
 
 ---
 
+## Public repo vs live demo
+
+| | Public repo (this repo) | Live demo (Railway) |
+|---|---|---|
+| What it is | Sanitized showcase edition | Working deployed experience |
+| Contains | Engine structure, docs, setup notes, public-safe demo modules | Full production app (private) |
+| Can you run it? | No — this is documentation + skeleton, not a runnable app | Yes — try the link above |
+| Has secrets? | No | No (secrets are in Railway env, not in code) |
+| Has full prompts? | No | Yes (private, not exposed) |
+| Has full scene library? | No (3 demo scenes) | Yes (40+ scenes, private) |
+
+**This public repo is a public-safe showcase edition of Life Blind Box Runtime.**
+
+It contains:
+- Sanitized engine structure (provider interfaces, ending parser, narrator pipeline)
+- Documentation (architecture, public safety, setup notes)
+- Public-safe demo modules (3 scene templates, mock providers)
+- Deployment notes for reference
+
+It does **not** expose:
+- Private production prompts
+- Full production code (Next.js frontend, Bun voice-game backend)
+- Secrets or API keys
+- Internal QA logs
+- Full scene library (40+ scenes in production)
+
+**To experience the actual product, use the live demo link above.**
+
+---
+
 ## What is this?
 
 Life Blind Box Runtime is a voice-first AI interaction engine. Each session is a 5-minute, 5-round interactive microdrama — you speak, the world answers, and every playthrough is a different life.
@@ -48,21 +78,38 @@ Life Blind Box Runtime explores how to make voice-first AI microdramas **always 
 
 | Feature | Status |
 |---|---|
-| Complete 5-round session | ✅ Working |
-| Ending card with title/type/verdict | ✅ Working |
-| Voice narration (OpenAI TTS) | ✅ Working |
-| Speech recognition (OpenAI ASR) | ✅ Working |
-| LLM story generation (OpenAI) | ✅ Working |
+| Complete 5-round session | ✅ Working (live demo) |
+| Ending card with title/type/verdict | ✅ Working (live demo) |
+| Voice narration (OpenAI TTS) | ✅ Working (live demo) |
+| Speech recognition (OpenAI ASR) | ✅ Working (live demo) |
+| LLM story generation (OpenAI) | ✅ Working (live demo) |
 | Railway deployment | ✅ Live |
-| Founder/tester mode | ✅ Working |
-| Quota management + refund on failure | ✅ Working |
-| ASR/TTS circuit breakers (429 handling) | ✅ Working |
-| Audio queue stability (no choppy playback) | ✅ Working |
-| Ending card timing (waits for narration) | ✅ Working |
+| Founder/tester mode | ✅ Working (live demo) |
+| Quota management + refund on failure | ✅ Working (live demo) |
+| ASR/TTS circuit breakers (429 handling) | ✅ Working (live demo) |
+| Audio queue stability (no choppy playback) | ✅ Working (live demo) |
+| Ending card timing (waits for narration) | ✅ Working (live demo) |
+
+### What's in this repo (public-safe)
+
+| Module | Purpose |
+|---|---|
+| `src/providers/llm.ts` | LLM provider interface + mock/fireworks/amd implementations |
+| `src/providers/asr.ts` | ASR provider interface + mock/browser implementations |
+| `src/providers/tts.ts` | TTS provider interface + mock/browser implementations |
+| `src/engine/ending.ts` | Ending card parser (`[[END]]` + `META:{...}`) |
+| `src/engine/narrator.ts` | Sentence streaming + TTS pipeline (simplified) |
+| `src/scenes/templates.ts` | 3 demo scene templates |
+| `docs/architecture.md` | High-level architecture overview |
+| `docs/public-safety.md` | What's NOT included and why |
+| `Dockerfile` | Containerization skeleton |
+| `.env.example` | Environment variable template |
+
+**Note**: These modules are sanitized reference implementations. They are not the full production code. The `npm run dev` script in this repo runs in mock mode only — it does not start a real server or connect to OpenAI.
 
 ### What's been fixed (private QA history)
 
-Over 3 days of iterative QA, these runtime issues were diagnosed and fixed:
+Over 3 days of iterative QA, these runtime issues were diagnosed and fixed (in the private production repo):
 - Audio queue desync causing choppy playback from turn 3+
 - META JSON leaking into subtitles/TTS
 - Premature ending on turn 4 instead of turn 5
@@ -73,7 +120,7 @@ Over 3 days of iterative QA, these runtime issues were diagnosed and fixed:
 
 ## Tech stack
 
-**Actually in use** (not aspirational):
+**Actually in use** (live demo, not this repo):
 - **Frontend**: Next.js 16, React, TypeScript, Tailwind CSS
 - **Backend**: Bun, Socket.io (voice-game service)
 - **LLM**: OpenAI gpt-4o-mini
@@ -82,56 +129,43 @@ Over 3 days of iterative QA, these runtime issues were diagnosed and fixed:
 - **Deployment**: Railway (2 services: frontend + voice-game)
 - **Provider abstraction**: Modular — can switch LLM/ASR/TTS providers via env vars
 
+**This public repo contains**: TypeScript modules showing the provider abstraction pattern, ending parser, and narrator pipeline. These are reference implementations, not the full production codebase.
+
 **Planned hackathon extensions** (not yet implemented):
 - Fireworks AI integration (AMD-compatible route)
 - Cost-aware provider routing
 - Usage telemetry dashboard
 
-## Setup
+## Local development (this repo)
 
-### Prerequisites
-
-- Node.js 18+ or Bun
-- OpenAI API key
-
-### Local development
+This repo is primarily for documentation and reference. Running it locally shows the mock provider behavior — it does **not** replicate the full live demo experience.
 
 ```bash
 # Clone
 git clone https://github.com/Crystal32378/voice-microdrama-engine.git
 cd voice-microdrama-engine
 
-# Install frontend dependencies
+# Install dependencies (minimal — no Next.js or Socket.io)
 npm install
 
-# Install voice-game dependencies
-cd mini-services/voice-game
-bun install
-cd ..
-
-# Copy env template
-cp .env.example .env
-# Edit .env — add your OPENAI_API_KEY
-
-# Run frontend (port 3000)
+# Run mock mode (prints status, does not start a server)
 npm run dev
+# Output: "Voice Microdrama Engine — mock mode ready"
 
-# In another terminal, run voice-game (port 3003)
-cd mini-services/voice-game
-bun run dev
-
-# Open http://localhost:3000
+# The src/ modules can be imported into your own project
+# See src/providers/ for provider interfaces
+# See src/engine/ for ending parser and narrator pipeline
 ```
 
 ### Environment variables
 
-Only put these in `.env` (gitignored). Never commit real keys.
+If you want to use real providers with the `src/` modules in your own project:
 
 ```bash
-# Required
+# Required for real providers
 OPENAI_API_KEY=
 
-# Provider selection (default: openai)
+# Provider selection
 LLM_PROVIDER=openai
 ASR_PROVIDER=openai
 TTS_PROVIDER=openai
@@ -141,24 +175,17 @@ OPENAI_LLM_MODEL=gpt-4o-mini
 OPENAI_TTS_MODEL=gpt-4o-mini-tts
 OPENAI_TTS_VOICE=fable
 OPENAI_ASR_MODEL=gpt-4o-mini-transcribe
-
-# Optional: founder mode (bypass public quota)
-FOUNDER_MODE_ENABLED=false
-FOUNDER_DAILY_LIMIT=100
-FOUNDER_TOKEN=
-
-# Optional: quota limits
-PER_IP_DAILY_LIMIT=5
-GLOBAL_DAILY_CAP=200
 ```
 
-### Deployment
+See [`.env.example`](./.env.example) for the full template. Never commit real keys.
 
-This project is deployed on Railway with 2 services:
+### Deployment notes
+
+The live demo is deployed on Railway with 2 services:
 - **frontend** (Next.js) — port 3000
 - **voice-game** (Bun + Socket.io) — port 3003
 
-See `Dockerfile` for containerization skeleton.
+This public repo does not include the full deployment configuration. The `Dockerfile` is a skeleton for reference. To deploy the full app, you would need the private production repo.
 
 ## Architecture
 
@@ -183,7 +210,7 @@ See [`docs/architecture.md`](./docs/architecture.md) for details.
 
 ## Demo scenes
 
-3 scene categories included (production has more):
+3 scene categories included in this repo (production has more):
 
 | Category | Vibe |
 |---|---|
@@ -197,10 +224,11 @@ See [`src/scenes/templates.ts`](./src/scenes/templates.ts).
 
 Being honest about what's not done yet:
 
+- **This repo is a skeleton**: Does not include full Next.js frontend or Bun backend; `npm run dev` runs mock mode only
 - **Voice UX is experimental**: TTS voice (fable) has a slight non-native accent in Chinese; acceptable for demo, needs tuning for production
 - **No cost telemetry**: Provider cost tracking is planned as a hackathon extension
 - **No Fireworks/AMD integration**: Currently OpenAI-only; Fireworks route is planned
-- **Scene library is small**: 3 demo scenes; production has 40+ across 8 categories (private)
+- **Scene library is small**: 3 demo scenes in this repo; production has 40+ across 8 categories (private)
 - **No persistence**: Games are in-memory only; no save/resume
 - **Single language**: Chinese primarily; English support is planned
 - **No mobile optimization**: Desktop browser focused for now
@@ -229,6 +257,7 @@ This is a public-safe edition. The following are intentionally omitted (see [`do
 
 - Private production prompts (system prompt, ending format instructions)
 - Full scene template library (40+ scenes in production; 3 here)
+- Full production code (Next.js frontend, Bun voice-game backend)
 - Founder token logic (simplified for public demo)
 - Usage logging infrastructure (JSONL logs, event chain diagnostics)
 - Internal QA notes and bug tracking
@@ -248,4 +277,5 @@ Built for AMD Developer Hackathon: ACT II. Voice-first storytelling inspired by 
 ---
 
 > This is a public-safe showcase edition of Life Blind Box Runtime.
-> The private production repository contains full prompts, complete scene library, internal QA logs, and secrets — these are not included here.
+> The private production repository contains full prompts, complete scene library, full production code, internal QA logs, and secrets — these are not included here.
+> To experience the actual product, use the [live demo](https://frontend-production-9b60.up.railway.app/).

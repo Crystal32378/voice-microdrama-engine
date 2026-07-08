@@ -1,10 +1,19 @@
 # Public Safety — What's NOT Included
 
-This document lists what has been intentionally omitted from this public-safe hackathon edition.
+This document lists what has been intentionally omitted from this public-safe showcase edition.
 
 ## Rationale
 
-The private production repository (`life-blind-box`) contains proprietary content, internal QA data, and secrets that must not be exposed publicly. This public repo is a **simplified showcase edition** built from scratch with clean commits — it is not a fork or mirror of the private repo.
+The private production repository (`life-blind-box`) contains proprietary content, internal QA data, full production code, and secrets that must not be exposed publicly. This public repo is a **sanitized showcase edition** built from scratch with clean commits — it is not a fork or mirror of the private repo.
+
+## Public repo vs live demo
+
+| | Public repo (this repo) | Live demo (Railway) |
+|---|---|---|
+| Purpose | Documentation, reference, showcase | Working product experience |
+| Runnable? | No — skeleton + docs only | Yes — full 5-round gameplay |
+| Contains secrets? | No | No (secrets in Railway env) |
+| Has full code? | No (reference modules only) | Yes (private) |
 
 ## Omitted Items
 
@@ -21,59 +30,67 @@ The private production repository (`life-blind-box`) contains proprietary conten
 
 **What's here instead:** 3 demo scenes (power fantasy, transmigration, sci-fi trial) with minimal placeholders.
 
-### 3. Founder / Tester Token Logic
+### 3. Full Production Code
+- Next.js 16 frontend (full React components, UI, audio playback logic)
+- Bun voice-game backend (Socket.io server, full game state management, circuit breakers)
+
+**What's here instead:** Sanitized reference modules showing the provider abstraction pattern, ending parser, and narrator pipeline structure.
+
+### 4. Founder / Tester Token Logic
 - Production has a `FOUNDER_MODE_ENABLED` system with token-based quota bypass for internal testing
 - Founder tokens, daily limit overrides, and user-mode classification
 
-**What's here instead:** No founder mode. The demo uses simple mock quota (unlimited plays).
+**What's here instead:** No founder mode. The `.env.example` documents the env vars for reference.
 
-### 4. Usage Logging Infrastructure
+### 5. Usage Logging Infrastructure
 - Production logs every event (ASR, LLM, TTS, turn transitions, errors) to structured JSONL
 - Includes latency tracking, circuit breaker states, event chain diagnostics
 
 **What's here instead:** Console logging only. No persistent usage logs.
 
-### 5. Internal QA Notes and Bug Tracking
+### 6. Internal QA Notes and Bug Tracking
 - Production has detailed docs on alpha testing findings, bug reports, and fix history
 - Internal worklog with commit-by-commit analysis
 
 **What's here instead:** Nothing. Internal QA stays private.
 
-### 6. Real Provider Keys
+### 7. Real Provider Keys
 - No `OPENAI_API_KEY`, `FIREWORKS_API_KEY`, `ZAI_API_KEY`, or any other credential is included
 - `.env.example` contains only empty placeholders
 
-**What's here instead:** Mock providers that run without any keys.
+**What's here instead:** Mock providers that run without any keys (reference only).
 
-### 7. Private Staging URL
+### 8. Private Staging URL
 - Production has a private staging environment for founder QA
 
-**What's here instead:** `localhost:3000` only. No staging URL is referenced anywhere in this repo.
+**What's here instead:** Public Railway demo URL is referenced in README. No private staging URL is exposed.
 
-### 8. Complete Git History
+### 9. Complete Git History
 - This repo starts from a fresh initial commit
 - No git history from the private repo is carried over
 
-### 9. Circuit Breakers and Rate Limiting
+### 10. Circuit Breakers and Rate Limiting
 - Production has TTS and ASR circuit breakers (429 handling, cooldown logic)
 - Per-session and global rate limit tracking
+- Full implementation with file-persisted state
 
-**What's here instead:** Not included in the public demo. Mock providers don't rate-limit.
+**What's here instead:** Not included in the public demo. Architecture docs mention the concept. The `src/` modules do not include circuit breaker code.
 
-### 10. Quota Management
+### 11. Quota Management
 - Production has per-IP daily limits, global caps, quota refund on failure
 - Server-side quota as source of truth
 
-**What's here instead:** No quota system. Demo allows unlimited plays.
+**What's here instead:** No quota system. `.env.example` documents the env vars for reference.
 
 ## What IS Included
 
-- Clean, runnable demo with mock providers
-- Provider abstraction interfaces (LLM / ASR / TTS)
+- Clean, documented reference modules (provider interfaces, ending parser, narrator pipeline)
 - 3 demo scene templates
-- Ending card parser
-- Dockerfile skeleton
 - Architecture documentation
+- Public safety documentation (this file)
+- Dockerfile skeleton (for reference)
+- Environment variable template
+- Setup notes (clarifying this is a skeleton, not a runnable app)
 
 ## Verification
 
@@ -84,3 +101,4 @@ Before each commit to this repo, verify:
 - [ ] No production prompts are copied verbatim
 - [ ] No usage logs or QA notes are included
 - [ ] `.gitignore` covers `.env`, `*.log`, `usage*.jsonl`, `/tmp`
+- [ ] README accurately describes this repo as a skeleton, not a runnable app

@@ -1,13 +1,13 @@
 {
   "name": "voice-microdrama-engine",
   "version": "0.1.0",
-  "description": "Voice-first interactive micro-drama engine — public-safe hackathon edition",
+  "description": "Life Blind Box Runtime — public-safe showcase edition. Voice-first AI microdrama engine.",
   "license": "MIT",
   "scripts": {
-    "dev": "echo 'Demo mode: open src/ in your editor or integrate with your framework. Mock providers need no server.' && node -e \"console.log('Voice Microdrama Engine — mock mode ready')\"",
-    "start": "node -e \"console.log('Voice Microdrama Engine — running in mock mode on port ' + (process.env.PORT || 3000))\"",
+    "dev": "echo 'This repo is a public-safe skeleton, not a runnable app. See README for live demo link.' && echo 'The src/ modules can be imported into your own project.' && node -e \"console.log('Mock mode — no server started. See README for details.')\"",
+    "start": "echo 'This repo does not start a server. See README for live demo.' && exit 0",
     "test": "echo 'Tests coming soon — see src/ for module structure'",
-    "build": "echo 'Build step: integrate with Next.js / Express / your framework of choice'"
+    "build": "echo 'No build step — this repo contains reference modules, not a buildable app'"
   },
   "keywords": [
     "voice-first",
@@ -16,7 +16,8 @@
     "amd",
     "hackathon",
     "llm",
-    "storytelling"
+    "storytelling",
+    "life-blind-box"
   ],
   "engines": {
     "node": ">=18"

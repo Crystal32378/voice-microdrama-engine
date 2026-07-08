@@ -1,6 +1,9 @@
-# Voice Microdrama Engine — Dockerfile
-# AMD Showcase hackathon skeleton
-# Multi-stage build for smaller image
+# Life Blind Box Runtime — Dockerfile
+# Public-safe showcase edition — skeleton for reference only
+#
+# This Dockerfile is a skeleton. It does NOT build the full production app
+# (which requires the private repo with Next.js frontend + Bun voice-game backend).
+# Use this as a reference for how the production app would be containerized.
 
 # ====== Stage 1: Build ======
 FROM node:20-slim AS builder
@@ -16,8 +19,8 @@ RUN npm ci || npm install
 # Copy source
 COPY . .
 
-# Build (if build script exists)
-RUN npm run build 2>/dev/null || echo "No build step, skipping"
+# Note: This repo has no build step — src/ contains reference modules
+RUN echo "No build step needed (public-safe skeleton)"
 
 # ====== Stage 2: Runtime ======
 FROM node:20-slim AS runtime
@@ -28,22 +31,21 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci --only=production 2>/dev/null || npm install --only=production 2>/dev/null || npm install
 
-# Copy built output and source
+# Copy source
 COPY --from=builder /app ./
 
-# Set environment defaults (mock mode — no API keys needed)
+# Set environment defaults
 ENV NODE_ENV=production
-ENV LLM_PROVIDER=mock
-ENV ASR_PROVIDER=mock
-ENV TTS_PROVIDER=mock
 ENV PORT=3000
 
-# Expose port
+# Expose port (for reference — this repo does not start a server)
 EXPOSE 3000
 
-# Health check (optional — adjust if you add a health endpoint)
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/ || exit 1
+# Note: No HEALTHCHECK — this repo does not run a server.
+# The production app (private repo) has a /health endpoint on the voice-game service.
+# If you adapt this Dockerfile for a real server, add:
+#   HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+#     CMD node -e "require('http').get('http://localhost:'+(process.env.PORT||3000)+'/', r=>process.exit(r.statusCode===200?0:1))"
 
-# Run the app
+# Run (prints status, does not start a server)
 CMD ["npm", "start"]
