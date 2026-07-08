@@ -36,6 +36,8 @@ It does **not** expose:
 
 **To experience the actual product, use the live demo link above.**
 
+Because the full production app contains private prompts and proprietary scene logic, the public repository provides sanitized reference modules while the live Railway URL serves as the evaluated demo.
+
 ---
 
 ## What is this?
@@ -74,7 +76,7 @@ Life Blind Box Runtime explores how to make voice-first AI microdramas **always 
 
 ## Current status
 
-**Playable checkpoint** — last verified 2026-07-06
+**Playable checkpoint** — live demo last verified: 2026-07-08
 
 | Feature | Status |
 |---|---|
