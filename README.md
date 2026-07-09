@@ -111,7 +111,7 @@ A 60–90 second demo video script is available in [`docs/demo-script.md`](./doc
 
 | Module | Purpose |
 |---|---|
-| `src/providers/llm.ts` | LLM provider interface + mock/fireworks/amd implementations |
+| `src/providers/llm.ts` | LLM provider interface + mock providers and provider interfaces for future Fireworks / AMD-compatible routing |
 | `src/providers/asr.ts` | ASR provider interface + mock/browser implementations |
 | `src/providers/tts.ts` | TTS provider interface + mock/browser implementations |
 | `src/engine/ending.ts` | Ending card parser (`[[END]]` + `META:{...}`) |
